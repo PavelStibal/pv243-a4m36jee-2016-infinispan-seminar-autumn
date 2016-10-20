@@ -23,6 +23,9 @@ package cz.muni.fi.pv243.seminar.infinispan.session;
 
 import cz.muni.fi.pv243.seminar.infinispan.model.Car;
 import org.infinispan.client.hotrod.RemoteCache;
+import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.infinispan.client.hotrod.configuration.Configuration;
+import org.infinispan.client.hotrod.configuration.ConfigurationBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
@@ -49,11 +52,16 @@ public class CarManager {
      */
     @PostConstruct
     public void init() {
-        //TODO: ****** create configuration here with server host and port specified ******
+        // create configuration for RemoteCache that will connect to our local Infinispan server
+        Configuration configuration = new ConfigurationBuilder()
+                .addServer()
+                    .host("127.0.0.1")
+                    .port(11322)
+                .build();
 
-        //TODO: ****** create RemoteCacheManager here with configuration from above and retrieve
-        //TODO: ****** a cache from it (see CACHE_NAME) and store it into the attribute ******
-        carCache = null;
+        // create cache manager and retrieve desired cache from it
+        // the cache must be configured in the server's standalone.xml !!!
+        carCache = new RemoteCacheManager(configuration).getCache(CACHE_NAME);
     }
 
     public String addNewCar() {
