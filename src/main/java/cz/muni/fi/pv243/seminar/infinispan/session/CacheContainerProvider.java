@@ -21,6 +21,7 @@
  */
 package cz.muni.fi.pv243.seminar.infinispan.session;
 
+import org.infinispan.configuration.cache.CacheMode;
 import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.configuration.global.GlobalConfiguration;
@@ -52,12 +53,12 @@ public class CacheContainerProvider {
         if (manager == null) {
 
             GlobalConfiguration glob = new GlobalConfigurationBuilder()
-                    //TODO: ****** alter the configuration here ******
+                    .clusteredDefault() // set default clustered configuration
                     .globalJmxStatistics().allowDuplicateDomains(true)
                     .build();
 
             Configuration loc = new ConfigurationBuilder()
-                    //TODO: ****** alter the configuration here ******
+                    .clustering().cacheMode(CacheMode.REPL_SYNC) // set replication mode
                     .build();
 
             manager = new DefaultCacheManager(glob, loc); //true means start the cache manager immediately
