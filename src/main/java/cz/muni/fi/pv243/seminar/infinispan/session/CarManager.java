@@ -67,11 +67,14 @@ public class CarManager {
     public String search() {
         QueryFactory qf = Search.getQueryFactory(carCache);
 
-        //TODO: ****** Create a search query to be able to search by number plates (and also substrings of them) ******
-        Query query = null;
+        // created search query
+        Query query = qf.from(Car.class)
+                        .having("numberPlate").like("%" + car.getNumberPlate() + "%")
+                        .toBuilder()
+                        .build();
 
-        //TODO: ****** Invoke the query and save the results ******
-        searchResults = null;
+        // invoke the query and retrieve results
+        searchResults = query.list();
 
         return "searchresults";
     }

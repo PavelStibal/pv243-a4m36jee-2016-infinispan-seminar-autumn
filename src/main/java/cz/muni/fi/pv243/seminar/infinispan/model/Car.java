@@ -32,6 +32,7 @@ import org.hibernate.search.annotations.Indexed;
  *
  * @author Martin Gencur
  */
+@Indexed(index="CarIndex")
 public class Car implements Serializable {
 
     private static final long serialVersionUID = 188164481825309731L;
@@ -58,6 +59,7 @@ public class Car implements Serializable {
 
     private Country country;
 
+    @Field(analyze=Analyze.NO)
     private String numberPlate;
 
     public String getBrand() {

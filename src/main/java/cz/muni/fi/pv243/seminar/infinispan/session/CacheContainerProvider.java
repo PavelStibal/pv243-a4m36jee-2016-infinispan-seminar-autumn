@@ -59,7 +59,7 @@ public class CacheContainerProvider {
 
             Configuration carCacheConfig = new ConfigurationBuilder().jmxStatistics().enable()
                     .clustering().cacheMode(CacheMode.LOCAL)
-                    //TODO: ****** Configure cache for indexing here ******
+                    .indexing().index(Index.LOCAL) // enabled local indexing to allow querying
                     .build();
 
             manager = new DefaultCacheManager(glob);
