@@ -25,12 +25,14 @@ import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.configuration.global.GlobalConfiguration;
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
+import org.infinispan.eviction.EvictionStrategy;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
 
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
@@ -56,7 +58,8 @@ public class CacheContainerProvider {
                     .build();
 
             Configuration loc = new ConfigurationBuilder()
-                    //TODO: ****** alter the configuration ******
+                    .eviction().size(4).strategy(EvictionStrategy.LRU) // maximum 4 entries at the time in the cache
+                    .expiration().lifespan(20L, TimeUnit.SECONDS) // every entry lives maximally 20 seconds in the cache, then it's removed
                     .build();
 
             manager = new DefaultCacheManager(glob, loc); //true means start the cache manager immediately
