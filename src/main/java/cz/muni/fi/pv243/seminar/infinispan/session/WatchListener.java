@@ -1,6 +1,9 @@
 package cz.muni.fi.pv243.seminar.infinispan.session;
 
 import cz.muni.fi.pv243.seminar.infinispan.model.Car;
+import org.infinispan.notifications.Listener;
+import org.infinispan.notifications.cachelistener.annotation.CacheEntryCreated;
+import org.infinispan.notifications.cachelistener.annotation.CacheEntryRemoved;
 import org.infinispan.notifications.cachelistener.event.CacheEntryCreatedEvent;
 import org.infinispan.notifications.cachelistener.event.CacheEntryRemovedEvent;
 
@@ -9,9 +12,10 @@ import org.infinispan.notifications.cachelistener.event.CacheEntryRemovedEvent;
  *
  * @author Jiri Holusa (jholusa@redhat.com)
  */
-//TODO: ****** annotate the class to be able to listen to appropriate events ******
+@Listener
 public class WatchListener {
 
+    @CacheEntryCreated
     public void entryCreated(CacheEntryCreatedEvent event) {
         if (!event.isPre()) {
             Car car = (Car) event.getValue();
@@ -19,6 +23,7 @@ public class WatchListener {
         }
     }
 
+    @CacheEntryRemoved
     public void entryRemoved(CacheEntryRemovedEvent event) {
         if (event.isPre()) {
             Car car = (Car) event.getValue();

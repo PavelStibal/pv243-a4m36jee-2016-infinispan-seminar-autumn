@@ -59,7 +59,7 @@ public class CarManager {
         carCache = cacheManager.getCache(CACHE_NAME);
         // little check to not allow adding more than one WatchListener
         if (!carCache.getListeners().stream().anyMatch(listener -> listener instanceof WatchListener)) {
-            //TODO: create the listener and attach it to the cache here
+            carCache.addListener(new WatchListener());
         }
     }
 
